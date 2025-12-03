@@ -1,0 +1,75 @@
+package com.example.buscaAnimeconexionspring.adapter
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.buscaAnimeconexionspring.R
+import com.example.buscaAnimeconexionspring.model.Anime
+
+class AnimeAdapter(
+    private var animes: MutableList<Anime>,
+    private val onClick: (Anime) -> Unit,
+    private val onToggleFavoritos: (Anime) -> Unit,
+    private val favoritos: MutableList<Long>
+) : RecyclerView.Adapter<AnimeAdapter.AnimeViewHolder>() {
+    
+    fun updateAnimes(newAnimes: List<Anime>) {
+        animes.clear()
+        animes.addAll(newAnimes)
+        notifyDataSetChanged()
+    }
+
+    fun updateFavoritos(favIds: List<Long>){
+        favoritos.clear()
+        favoritos.addAll(favIds)
+        notifyDataSetChanged()
+    }
+    
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_anime, parent, false)
+        return AnimeViewHolder(view)
+    }
+    
+    override fun onBindViewHolder(holder: AnimeViewHolder, position: Int) {
+        holder.bind(animes[position])
+    }
+    
+    override fun getItemCount(): Int = animes.size
+    
+    inner class AnimeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val tvTitulo: TextView = itemView.findViewById(R.id.tvTitulo)
+
+        private val tvAutor: TextView = itemView.findViewById(R.id.tvAutor)
+        private val tvRating: TextView = itemView.findViewById(R.id.tvRating)
+        private val tvCategorias: TextView = itemView.findViewById(R.id.tvCategorias)
+        private val btnFavorito: Button = itemView.findViewById<Button>(R.id.btnFavorito)
+        private val cardView: CardView = itemView.findViewById(R.id.cardView)
+        
+        fun bind(anime: Anime) {
+            tvTitulo.text = anime.title ?: ""
+            tvAutor.text = "Autor: ${anime.author}"
+            tvRating.text = "Rating: ${anime.rating}"
+            tvCategorias.text = "Categorias: ${anime.categories}"
+
+            if(favoritos.contains(anime.id)){
+                btnFavorito.text = "Quitar de favoritos"
+            }else{
+                btnFavorito.text = "Guardar en favoritos"
+            }
+            
+           cardView.setOnClickListener{
+               onClick(anime)
+           }
+            
+            btnFavorito.setOnClickListener {
+                onToggleFavoritos(anime)
+            }
+        }
+    }
+}
+
