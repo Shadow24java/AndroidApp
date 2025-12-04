@@ -28,6 +28,10 @@ class FavoritosActivity : AppCompatActivity() {
         adapter = AnimeAdapter(lista, onClick = {}, onToggleFavoritos = { /* toggle si quieres */ }, favoritos = favoritosIds)
         binding.recyclerFavoritos.layoutManager = LinearLayoutManager(this)
         binding.recyclerFavoritos.adapter = adapter
+        binding.btnVolver.setOnClickListener {
+            finish()
+        }
+
 
         cargarFavoritos()
     }

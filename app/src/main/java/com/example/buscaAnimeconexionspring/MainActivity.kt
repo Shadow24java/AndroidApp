@@ -1,6 +1,7 @@
 package com.example.buscaAnimeconexionspring
 
 import AnimeAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -49,6 +50,11 @@ class MainActivity : AppCompatActivity() {
 
         btnCargar.setOnClickListener { cargarAnimes() }
         cargarAnimes()
+        val btnFavoritos: Button = findViewById(R.id.btnFavoritos)
+        btnFavoritos.setOnClickListener {
+            val intent = Intent(this@MainActivity, FavoritosActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun cargarAnimes() {
@@ -84,6 +90,8 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
                 Log.e(TAG, "Error en petición", t)
             }
+
+
         })
     }
 }

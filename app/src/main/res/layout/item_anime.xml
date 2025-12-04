@@ -32,7 +32,7 @@
             android:text="Título del anime"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             app:layout_constraintStart_toEndOf="@id/imgCover"
             app:layout_constraintTop_toTopOf="@id/imgCover"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:text="Categoría: -"
             android:textSize="13sp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             app:layout_constraintStart_toStartOf="@id/tvTitulo"
             app:layout_constraintTop_toBottomOf="@id/tvTitulo"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:text="Valoración: -"
             android:textSize="13sp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             app:layout_constraintStart_toStartOf="@id/tvTitulo"
             app:layout_constraintTop_toBottomOf="@id/tvCategorias"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:text="Autor: -"
             android:textSize="13sp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             app:layout_constraintStart_toStartOf="@id/tvTitulo"
             app:layout_constraintTop_toBottomOf="@id/tvValoracion"
             app:layout_constraintEnd_toEndOf="parent" />
