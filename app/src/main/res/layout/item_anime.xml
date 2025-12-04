@@ -16,16 +16,14 @@
 
         <ImageView
             android:id="@+id/imgCover"
-            android:layout_width="70dp"
-            android:layout_height="100dp"
+            android:layout_width="64dp"
+            android:layout_height="96dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_foreground"
             android:background="#111827"
             android:contentDescription="@string/app_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/tvTitulo"
@@ -45,7 +43,7 @@
             android:layout_height="wrap_content"
             android:text="Categoría: -"
             android:textSize="13sp"
-            android:textColor="#cbd5e1"
+            android:textColor="@android:color/white"
             app:layout_constraintStart_toStartOf="@id/tvTitulo"
             app:layout_constraintTop_toBottomOf="@id/tvTitulo"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -56,7 +54,7 @@
             android:layout_height="wrap_content"
             android:text="Valoración: -"
             android:textSize="13sp"
-            android:textColor="#cbd5e1"
+            android:textColor="@android:color/white"
             app:layout_constraintStart_toStartOf="@id/tvTitulo"
             app:layout_constraintTop_toBottomOf="@id/tvCategorias"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -67,7 +65,7 @@
             android:layout_height="wrap_content"
             android:text="Autor: -"
             android:textSize="13sp"
-            android:textColor="#cbd5e1"
+            android:textColor="@android:color/white"
             app:layout_constraintStart_toStartOf="@id/tvTitulo"
             app:layout_constraintTop_toBottomOf="@id/tvValoracion"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -76,8 +74,10 @@
             android:id="@+id/btnFavorito"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Guardar en favoritos"
+            android:text="Favorito"
             android:textAllCaps="false"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             android:backgroundTint="#f59e0b"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"

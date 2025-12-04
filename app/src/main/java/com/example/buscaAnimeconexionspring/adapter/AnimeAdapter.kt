@@ -2,9 +2,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.buscaAnimeconexionspring.R
 import com.example.buscaAnimeconexionspring.model.Anime
 
@@ -46,12 +48,23 @@ class AnimeAdapter(
         private val tvCategorias: TextView = itemView.findViewById(R.id.tvCategorias)
         private val btnFavorito: Button = itemView.findViewById(R.id.btnFavorito)
         private val cardView: CardView = itemView.findViewById(R.id.cardView)
+        private val imgCover: ImageView = itemView.findViewById(R.id.imgCover)
 
         fun bind(anime: Anime) {
             tvTitulo.text = anime.nombre ?: ""
             tvAutor.text = "Autor: ${anime.autor ?: "-"}"
             tvValoracion.text = "Valoración: ${anime.valoracion ?: "-"}"
             tvCategorias.text = "Categoría: ${anime.categoria ?: "-"}"
+
+            val url = anime.coverUrl ?: anime.miniaturas?.let { "http://10.0.2.2:8090/images/$it" }
+
+            Glide.with(itemView.context)
+                .load(url)
+                .placeholder(R.drawable.placeholder_anime)
+                .error(R.drawable.placeholder_anime)
+                .into(imgCover)
+
+
 
             btnFavorito.text = if (favoritos.contains(anime.id)) "Quitar de favoritos" else "Guardar en favoritos"
 

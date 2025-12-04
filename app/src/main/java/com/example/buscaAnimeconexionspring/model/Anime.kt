@@ -15,10 +15,10 @@ data class Anime(
     val miniaturas: String?,
     val coverUrl: String?,
     val estado: String?,
-    val fechaInicio: LocalDate?,
-    val fechaFin: LocalDate?,
+    val fechaInicio: String?,
+    val fechaFin: String?,
     val proximoEpNum: Int?,
-    val proximoEpFecha: LocalDateTime?,
+    val proximoEpFecha: String?,
     val descripcion: String?
     ) : Serializable
 
