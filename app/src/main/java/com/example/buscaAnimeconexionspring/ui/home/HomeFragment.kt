@@ -9,14 +9,14 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.buscaAnimeconexionspring.R
-import com.example.buscaAnimeconexionspring.adapter.PeliculaAdapter
-import com.example.buscaAnimeconexionspring.api.PeliculaApiService
+import com.example.buscaAnimeconexionspring.adapter.AnimeAdapter
+import com.example.buscaAnimeconexionspring.api.AnimeApiService
 import com.example.buscaAnimeconexionspring.databinding.FragmentHomeBinding
-import com.example.buscaAnimeconexionspring.model.Pelicula
+import com.example.buscaAnimeconexionspring.model.Anime
+import com.example.buscaAnimeconexionspring.model.ApiResponse
 import com.example.buscaAnimeconexionspring.service.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,108 +28,74 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: PeliculaAdapter
-    private var peliculasList: MutableList<Pelicula> = mutableListOf()
+    private lateinit var adapter: AnimeAdapter
+    private val animesList: MutableList<Anime> = mutableListOf()
     private lateinit var btnCargar: Button
     private lateinit var tvEstado: TextView
-    private lateinit var apiService: PeliculaApiService
+    private lateinit var apiService: AnimeApiService
 
-    companion object {
-        private const val TAG = "HomeFragment"
-    }
+    companion object { private const val TAG = "HomeFragment" }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        val root = binding.root
 
-        // Inicializar componentes
-        recyclerView = binding.root.findViewById(R.id.recyclerView)
-        btnCargar = binding.root.findViewById(R.id.btnCargar)
-        tvEstado = binding.root.findViewById(R.id.tvEstado)
+        recyclerView = root.findViewById(R.id.recyclerView)
+        btnCargar = root.findViewById(R.id.btnCargar)
+        tvEstado = root.findViewById(R.id.tvEstado)
 
-        // Configurar RecyclerView con callbacks (HomeFragment solo muestra, no edita)
-        adapter = PeliculaAdapter(
-            peliculasList,
-            onEditarClick = { pelicula ->
-                Toast.makeText(
-                    requireContext(),
-                    "Para editar, ve a la pestaña Dashboard",
-                    Toast.LENGTH_SHORT
-                ).show()
-            },
-            onEliminarClick = { pelicula ->
-                Toast.makeText(
-                    requireContext(),
-                    "Para eliminar, ve a la pestaña Dashboard",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        apiService = ApiClient.getAnimeApiService()
+
+        adapter = AnimeAdapter(
+            animes = animesList,
+            onClick = { /* abre detalle si quieres */ },
+            onToggleFavoritos = { /* añade/quita favoritos si usas esa lógica */ },
+            favoritos = mutableListOf()
         )
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
-        // Inicializar API Service
-        apiService = ApiClient.getApiService()
-
-        // Configurar botón
-        btnCargar.setOnClickListener {
-            cargarPeliculas()
-        }
-
-        // Cargar películas al iniciar
-        cargarPeliculas()
+        btnCargar.setOnClickListener { cargarAnimes() }
+        cargarAnimes()
 
         return root
     }
 
-    private fun cargarPeliculas() {
+    private fun cargarAnimes() {
         tvEstado.text = "Cargando..."
         btnCargar.isEnabled = false
 
-        val call = apiService.getAllPeliculas()
+        val call: Call<ApiResponse<List<Anime>>> = apiService.getAll()
 
-        call.enqueue(object : Callback<List<Pelicula>> {
-            override fun onResponse(call: Call<List<Pelicula>>, response: Response<List<Pelicula>>) {
+        call.enqueue(object : Callback<ApiResponse<List<Anime>>> {
+            override fun onResponse(
+                call: Call<ApiResponse<List<Anime>>>,
+                response: Response<ApiResponse<List<Anime>>>
+            ) {
                 btnCargar.isEnabled = true
-
-                if (response.isSuccessful && response.body() != null) {
-                    adapter.updatePeliculas(response.body()!!)
-                    peliculasList = response.body()!!.toMutableList()
-
-                    tvEstado.text = "Películas cargadas: ${peliculasList.size}"
-                    Toast.makeText(
-                        requireContext(),
-                        "Se cargaron ${peliculasList.size} películas",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    Log.d(TAG, "Películas cargadas: ${peliculasList.size}")
+                val data = response.body()?.data
+                if (response.isSuccessful && data != null) {
+                    animesList.clear()
+                    animesList.addAll(data)
+                    adapter.notifyDataSetChanged()
+                    tvEstado.text = "Animes cargados: ${animesList.size}"
+                    Toast.makeText(requireContext(), "Se cargaron ${animesList.size} animes", Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, "Animes cargados: ${animesList.size}")
                 } else {
                     tvEstado.text = "Error: ${response.code()}"
-                    Toast.makeText(
-                        requireContext(),
-                        "Error al cargar: ${response.code()}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(requireContext(), "Error al cargar: ${response.code()}", Toast.LENGTH_SHORT).show()
                     Log.e(TAG, "Error en respuesta: ${response.code()}")
                 }
             }
 
-            override fun onFailure(call: Call<List<Pelicula>>, t: Throwable) {
+            override fun onFailure(call: Call<ApiResponse<List<Anime>>>, t: Throwable) {
                 btnCargar.isEnabled = true
                 tvEstado.text = "Error de conexión"
-                Toast.makeText(
-                    requireContext(),
-                    "Error de conexión: ${t.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(requireContext(), "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
                 Log.e(TAG, "Error en petición", t)
             }
         })

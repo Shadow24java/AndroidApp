@@ -1,7 +1,6 @@
 package com.example.buscaAnimeconexionspring.service
 
 import com.example.buscaAnimeconexionspring.api.AnimeApiService
-import com.example.buscaAnimeconexionspring.api.FavoritoApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -25,10 +24,6 @@ object ApiClient {
     
     fun getAnimeApiService(): AnimeApiService{
         return getRetrofit().create(AnimeApiService::class.java)
-    }
-
-    fun getFavoritoApiService(): FavoritoApiService{
-        return getRetrofit().create(FavoritoApiService::class.java)
     }
 }
 

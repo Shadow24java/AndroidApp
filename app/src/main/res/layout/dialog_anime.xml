@@ -13,81 +13,121 @@
             android:id="@+id/tvTituloDialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nueva Película"
+            android:text="Nuevo anime"
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center"
+            android:textColor="@android:color/black"
             android:layout_marginBottom="16dp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:hint="Título">
-
+            android:layout_marginBottom="10dp"
+            android:hint="Nombre">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etTitulo"
+                android:id="@+id/etNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:hint="Género">
-
+            android:layout_marginBottom="10dp"
+            android:hint="Categoría">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etGenero"
+                android:id="@+id/etCategoria"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:hint="Año">
-
+            android:layout_marginBottom="10dp"
+            android:hint="Autor">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etAnio"
+                android:id="@+id/etAutor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:hint="Duración (minutos)">
-
+            android:layout_marginBottom="10dp"
+            android:hint="Valoración (0-10)">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etDuracion"
+                android:id="@+id/etValoracion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Director">
-
+            android:layout_marginBottom="10dp"
+            android:hint="Enlace trailer">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etDirector"
+                android:id="@+id/etTrailer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="textUri"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Enlace ver anime">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etVer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textUri"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Miniatura / Cover URL">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textUri"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Marcar como favorito"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swFavorito"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,7 +150,4 @@
         </LinearLayout>
 
     </LinearLayout>
-
 </ScrollView>
-
-
