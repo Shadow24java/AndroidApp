@@ -1,5 +1,6 @@
 package com.example.buscaAnimeconexionspring.ui.home
 
+import AnimeAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.buscaAnimeconexionspring.R
-import com.example.buscaAnimeconexionspring.adapter.AnimeAdapter
 import com.example.buscaAnimeconexionspring.api.AnimeApiService
 import com.example.buscaAnimeconexionspring.databinding.FragmentHomeBinding
 import com.example.buscaAnimeconexionspring.model.Anime
