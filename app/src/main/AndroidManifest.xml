@@ -19,7 +19,11 @@
 
         <activity
             android:name="com.example.buscaAnimeconexionspring.MainActivity"
-            android:exported="true">
+            android:exported="true"/>
+        <activity
+            android:name=".Login"
+            android:exported="true"
+            android:label="Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
