@@ -29,34 +29,34 @@
     <!-- Correo -->
     <EditText
         android:id="@+id/etEmail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="382dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#ffffff"
         android:hint="Correo electrónico"
         android:inputType="textEmailAddress"
         android:padding="8dp"
-        android:backgroundTint="#ffffff"
         android:textColor="@android:color/white"
         android:textColorHint="#aaaaaa"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
     <!-- Contraseña -->
     <EditText
         android:id="@+id/etPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="382dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#ffffff"
         android:hint="Contraseña"
         android:inputType="textPassword"
         android:padding="8dp"
-        android:backgroundTint="#ffffff"
         android:textColor="@android:color/white"
         android:textColorHint="#aaaaaa"
-        app:layout_constraintTop_toBottomOf="@id/etEmail"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etEmail" />
 
     <!-- Botón de entrar (mismo estilo naranja que Cargar Animes) -->
     <Button
