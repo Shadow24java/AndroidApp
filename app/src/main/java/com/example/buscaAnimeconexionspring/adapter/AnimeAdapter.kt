@@ -66,7 +66,7 @@ class AnimeAdapter(
 
 
 
-            btnFavorito.text = if (favoritos.contains(anime.id)) "Quitar de favoritos" else "Guardar en favoritos"
+            btnFavorito.text = if (favoritos.contains(anime.id)) "Quitar" else "Favoritos"
 
             cardView.setOnClickListener { onClick(anime) }
             btnFavorito.setOnClickListener { onToggleFavoritos(anime) }
