@@ -12,7 +12,7 @@ data class Anime(
     val autor: String?,
     val enlaceTrailer: String?,
     val enlaceVer: String?,
-    val miniaturas: String?,
+    val miniatura: String?,
     val coverUrl: String?,
     val estado: String?,
     val fechaInicio: String?,

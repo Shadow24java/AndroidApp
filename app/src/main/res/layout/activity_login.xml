@@ -21,10 +21,10 @@
         android:textColor="@android:color/white"
         android:gravity="center"
         android:padding="8dp"
+        android:layout_marginTop="58dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="48dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Correo -->
     <EditText

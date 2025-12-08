@@ -14,6 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class FavoritosActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityFavoritosBinding
     private lateinit var adapter: AnimeAdapter
     private val lista = mutableListOf<Anime>()
@@ -25,20 +26,33 @@ class FavoritosActivity : AppCompatActivity() {
         binding = ActivityFavoritosBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = AnimeAdapter(lista, onClick = {}, onToggleFavoritos = { /* toggle si quieres */ }, favoritos = favoritosIds)
+        // Flecha de back en la barra superior
+        supportActionBar?.title = "Favoritos"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        adapter = AnimeAdapter(
+            animes = lista,
+            onClick = { /* detalle si quieres */ },
+            onToggleFavoritos = { /* toggle si quieres */ },
+            favoritos = favoritosIds
+        )
         binding.recyclerFavoritos.layoutManager = LinearLayoutManager(this)
         binding.recyclerFavoritos.adapter = adapter
-        binding.btnVolver.setOnClickListener {
-            finish()
-        }
-
 
         cargarFavoritos()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
     private fun cargarFavoritos() {
         api.getFavorites().enqueue(object : Callback<ApiResponse<List<Anime>>> {
-            override fun onResponse(call: Call<ApiResponse<List<Anime>>>, resp: Response<ApiResponse<List<Anime>>>) {
+            override fun onResponse(
+                call: Call<ApiResponse<List<Anime>>>,
+                resp: Response<ApiResponse<List<Anime>>>
+            ) {
                 val data = resp.body()?.data ?: emptyList()
                 lista.clear(); lista.addAll(data)
                 favoritosIds.clear(); favoritosIds.addAll(data.mapNotNull { it.id })
@@ -48,4 +62,3 @@ class FavoritosActivity : AppCompatActivity() {
         })
     }
 }
-

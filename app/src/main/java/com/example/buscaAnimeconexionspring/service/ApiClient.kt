@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiClient {
     
 
-    private const val BASE_URL = "http://10.0.2.2:8091/api/"
+    private const val BASE_URL = "http://10.0.2.2:8090/api/"
 
     
     private var retrofit: Retrofit? = null
