@@ -14,6 +14,10 @@ import com.example.buscaAnimeconexionspring.api.AnimeApiService
 import com.example.buscaAnimeconexionspring.model.Anime
 import com.example.buscaAnimeconexionspring.model.ApiResponse
 import com.example.buscaAnimeconexionspring.service.ApiClient
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,11 +31,26 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvEstado: TextView
     private lateinit var apiService: AnimeApiService
 
+    // 🔹 Auth + Google
+    private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
+
     companion object { private const val TAG = "MainActivity" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // --------- AUTH / GOOGLE -----------
+        auth = FirebaseAuth.getInstance()
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        // -----------------------------------
 
         recyclerView = findViewById(R.id.recyclerView)
         btnCargar = findViewById(R.id.btnCargar)
@@ -50,10 +69,17 @@ class MainActivity : AppCompatActivity() {
 
         btnCargar.setOnClickListener { cargarAnimes() }
         cargarAnimes()
+
         val btnFavoritos: Button = findViewById(R.id.btnFavoritos)
         btnFavoritos.setOnClickListener {
             val intent = Intent(this@MainActivity, FavoritosActivity::class.java)
             startActivity(intent)
+        }
+
+        // 🔹 Botón CERRAR SESIÓN (asegúrate de tenerlo en el XML con este id)
+        val btnLogout: Button = findViewById(R.id.btnLogout)
+        btnLogout.setOnClickListener {
+            signOut()
         }
     }
 
@@ -90,8 +116,20 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
                 Log.e(TAG, "Error en petición", t)
             }
-
-
         })
+    }
+
+    // 🔻 Cerrar sesión (Firebase + Google) pero sin borrar la cuenta del dispositivo
+    private fun signOut() {
+        // 1. Firebase fuera
+        auth.signOut()
+
+        // 2. Google fuera SOLO de la app (NO borra la cuenta del móvil)
+        googleSignInClient.signOut().addOnCompleteListener {
+            // 3. Volvemos al Login limpiando el back stack
+            val intent = Intent(this, Login::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
     }
 }

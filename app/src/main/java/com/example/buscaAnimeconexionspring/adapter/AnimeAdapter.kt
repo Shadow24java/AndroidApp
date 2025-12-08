@@ -56,7 +56,7 @@ class AnimeAdapter(
             tvValoracion.text = "Valoración: ${anime.valoracion ?: "-"}"
             tvCategorias.text = "Categoría: ${anime.categoria ?: "-"}"
 
-            val url = anime.coverUrl ?: anime.miniaturas?.let { "http://10.0.2.2:8090/images/$it" }
+            val url = anime.coverUrl ?: anime.miniaturas?.let { "http://10.0.2.2:8091/images/$it" }
 
             Glide.with(itemView.context)
                 .load(url)

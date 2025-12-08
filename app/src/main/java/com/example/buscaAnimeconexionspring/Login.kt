@@ -61,7 +61,7 @@ class Login : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        // 🔹 Configuración de Google Sign-In (AQUÍ se usa GoogleSignIn y GoogleSignInClient)
+        // Configuración de Google Sign-In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -69,7 +69,7 @@ class Login : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        // 🔹 Login normal email/contraseña
+        // Login normal email/contraseña
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
@@ -81,12 +81,12 @@ class Login : AppCompatActivity() {
             }
         }
 
-        // 🔹 Ir a registro (lo haremos luego)
+        // Ir a registro
         binding.tvGoToRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 
-        // 🔹 Botón de Google
+        // Botón de Google
         binding.btnLoginGoogle.setOnClickListener {
             Toast.makeText(this, "Click en Google", Toast.LENGTH_SHORT).show()
             val signInIntent = googleSignInClient.signInIntent
@@ -94,13 +94,7 @@ class Login : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            goToMain()
-        }
-    }
+    // 👇 Ya no hay onStart que salte el login
 
     private fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
