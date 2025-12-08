@@ -12,7 +12,20 @@
           "package_name": "com.example.buscaAnimeconexionspring"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "182341518626-4vc10t7ed0a7i5ol2ofsm6fsjqvm420p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.buscaAnimeconexionspring",
+            "certificate_hash": "e1dc70c9c00e06cd643516dec3119929150f0a70"
+          }
+        },
+        {
+          "client_id": "182341518626-ieu2onbgnklbtn9evjbhmglqllalut7b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBbYgdWsTTzCE14oJIUbiANQCK7sRo-YP0"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "182341518626-ieu2onbgnklbtn9evjbhmglqllalut7b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
