@@ -4,29 +4,29 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.buscaAnimeconexionspring.databinding.ActivityLoginBinding
-import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
 class Login : AppCompatActivity() {
 
-    private lateinit var binding : ActivityLoginBinding
-    private lateinit var auth : FirebaseAuth
-    private lateinit var googleSignInClient : GoogleSignInClient
+    private lateinit var binding: ActivityLoginBinding
+    private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     // Launcher para el resultado del intent de Google
     private val googleSignInLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
+
+        Toast.makeText(this, "Vuelta de Google, resultCode = ${result.resultCode}", Toast.LENGTH_SHORT).show()
+
         if (result.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
@@ -61,23 +61,39 @@ class Login : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        
+        // 🔹 Configuración de Google Sign-In (AQUÍ se usa GoogleSignIn y GoogleSignInClient)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
 
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        // 🔹 Login normal email/contraseña
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Rellena todos los campos", Toast.LENGTH_SHORT).show()
-            }else {
+            } else {
                 loginUser(email, password)
             }
         }
 
+        // 🔹 Ir a registro (lo haremos luego)
         binding.tvGoToRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+
+        // 🔹 Botón de Google
+        binding.btnLoginGoogle.setOnClickListener {
+            Toast.makeText(this, "Click en Google", Toast.LENGTH_SHORT).show()
+            val signInIntent = googleSignInClient.signInIntent
+            googleSignInLauncher.launch(signInIntent)
+        }
     }
+
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
@@ -85,20 +101,25 @@ class Login : AppCompatActivity() {
             goToMain()
         }
     }
-    private fun loginUser(email:String, password:String) {
+
+    private fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
-                if(task.isSuccessful) {
+                if (task.isSuccessful) {
                     goToMain()
-                }else {
-                    Toast.makeText(this, "Error al iniciar sesión: ${task.exception?.localizedMessage}", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Error al iniciar sesión: ${task.exception?.localizedMessage}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
     }
+
     private fun goToMain() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
-
 }
