@@ -8,7 +8,7 @@ object ApiClient {
 
     // 👇 IMPORTANTE: puerto numérico + barra final
     // si tu backend va en 8091, cambia 8090 por 8091
-    private const val BASE_URL = "http://10.0.2.2:8090/api/"
+    private const val BASE_URL = "http://10.0.2.2:8091/api/"
 
     private var retrofit: Retrofit? = null
 
