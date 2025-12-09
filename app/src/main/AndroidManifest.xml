@@ -24,6 +24,8 @@
             android:name=".FavoritosActivity"
             android:exported="false" />
 
+        <activity android:name=".AnimeDetailActivity" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true" />

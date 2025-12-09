@@ -15,7 +15,8 @@ class AnimeAdapter(
     private var animes: MutableList<Anime>,
     private val onClick: (Anime) -> Unit,
     private val onToggleFavoritos: (Anime) -> Unit,
-    private val favoritos: MutableList<Long>
+    private val favoritos: MutableList<Long>,
+    private val forceRemoveLabel: Boolean = false
 ) : RecyclerView.Adapter<AnimeAdapter.AnimeViewHolder>() {
 
     fun updateAnimes(newAnimes: List<Anime>) {
@@ -68,7 +69,8 @@ class AnimeAdapter(
 
 
 
-            btnFavorito.text = if (favoritos.contains(anime.id)) "Quitar" else "Favoritos"
+            val isFav = forceRemoveLabel || (anime.id != null && favoritos.contains(anime.id!!))
+            btnFavorito.text = if (isFav) "Quitar" else "Favoritos"
 
             cardView.setOnClickListener { onClick(anime) }
             btnFavorito.setOnClickListener { onToggleFavoritos(anime) }
