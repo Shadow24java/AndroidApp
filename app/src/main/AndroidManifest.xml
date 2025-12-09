@@ -15,32 +15,53 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ConexionAndroidSpring"
         android:usesCleartextTraffic="true">
+
+        <!-- Registro: rota según el sensor -->
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:label="Registro"/>
+            android:label="Registro"
+            android:screenOrientation="fullSensor" />
 
+        <!-- Favoritos: rota -->
         <activity
             android:name=".FavoritosActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor" />
 
-        <activity android:name=".AnimeDetailActivity" />
-        <activity android:name=".EmisionActivity" />
-        <activity android:name=".CreateAnimeActivity" />
+        <!-- Detalle Anime: rota -->
+        <activity
+            android:name=".AnimeDetailActivity"
+            android:screenOrientation="fullSensor" />
 
+        <!-- Emisión: rota -->
+        <activity
+            android:name=".EmisionActivity"
+            android:screenOrientation="fullSensor" />
+
+        <!-- Crear anime: rota -->
+        <activity
+            android:name=".CreateAnimeActivity"
+            android:screenOrientation="fullSensor" />
+
+        <!-- Main: rota -->
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="fullSensor" />
+
+        <!-- Login: rota -->
         <activity
             android:name=".Login"
             android:exported="true"
-            android:label="Login">
+            android:label="Login"
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
