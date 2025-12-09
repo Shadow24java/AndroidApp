@@ -23,6 +23,18 @@ class AnimeDetailActivity : AppCompatActivity() {
         val anime = intent.getSerializableExtra("anime") as? Anime
             ?: run { finish(); return }
 
+        val fechaTxt = anime.fechaInicio ?: anime.proximoEpFecha ?: anime.fechaFin
+        binding.tvFecha.text = "Fecha emisión: ${fechaTxt ?: "-"}"
+
+        val proxNum = anime.proximoEpNum
+        val proxFecha = anime.proximoEpFecha
+        val proxTxt = when {
+            proxNum != null && proxFecha != null -> "Próximo ep. $proxNum:"
+            proxNum != null -> "Próximo ep. $proxNum"
+            else -> "Próximo ep.: -"
+        }
+        binding.tvProximo.text = proxTxt
+
         binding.tvTitulo.text = anime.nombre ?: ""
         binding.tvCategoria.text = "Categoría: ${anime.categoria ?: "-"}"
         binding.tvValoracion.text = "Valoración: ${anime.valoracion ?: "-"}"

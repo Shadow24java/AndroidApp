@@ -25,6 +25,8 @@
             android:exported="false" />
 
         <activity android:name=".AnimeDetailActivity" />
+        <activity android:name=".EmisionActivity" />
+        <activity android:name=".CreateAnimeActivity" />
 
         <activity
             android:name=".MainActivity"

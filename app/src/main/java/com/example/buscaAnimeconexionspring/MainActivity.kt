@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.example.buscaAnimeconexionspring.CreateAnimeActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -67,6 +68,13 @@ class MainActivity : AppCompatActivity() {
         binding.btnCargar.setOnClickListener { cargarFavoritosYAnimes() }
         binding.btnFavoritos.setOnClickListener {
             startActivity(Intent(this, FavoritosActivity::class.java))
+        }
+        binding.btnEmision.setOnClickListener {
+            startActivity(Intent(this, EmisionActivity::class.java))
+        }
+
+        binding.fabAddAnime.setOnClickListener {
+            startActivity(Intent(this, CreateAnimeActivity::class.java))
         }
         binding.btnLogout.setOnClickListener { signOut() }
 
