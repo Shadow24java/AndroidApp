@@ -147,6 +147,8 @@ class MainActivity : AppCompatActivity() {
                 binding.btnCargar.isEnabled = true
                 val data = response.body()?.data
                 if (response.isSuccessful && data != null) {
+                    allAnimes.clear()
+                    allAnimes.addAll(data)
                     animesList.clear()
                     animesList.addAll(data)
                     adapter.updateFavoritos(favoritosIds)
