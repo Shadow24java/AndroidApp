@@ -97,4 +97,15 @@
         app:layout_constraintTop_toBottomOf="@id/btnLogout"
         app:layout_constraintVertical_bias="1.0" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="Buscar anime"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_search_24"
+        app:tint="@android:color/white" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

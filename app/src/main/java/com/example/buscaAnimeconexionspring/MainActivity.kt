@@ -1,9 +1,11 @@
 package com.example.buscaAnimeconexionspring
 
 import AnimeAdapter
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,10 +23,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import com.example.buscaAnimeconexionspring.CreateAnimeActivity
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: AnimeAdapter
+    private  val allAnimes = mutableListOf<Anime>()
     private val animesList = mutableListOf<Anime>()
     private val favoritosIds = mutableListOf<Long>()
     private lateinit var apiService: AnimeApiService
@@ -78,7 +82,40 @@ class MainActivity : AppCompatActivity() {
         }
         binding.btnLogout.setOnClickListener { signOut() }
 
+        binding.fabSearch.setOnClickListener {
+            showSearchDialog()
+        }
+
         cargarFavoritosYAnimes()
+    }
+
+    private fun showSearchDialog() {
+        val editText = EditText(this).apply {
+            hint = "Buscar anime..."
+            setPadding(40, 40, 40, 40)
+        }
+        AlertDialog.Builder(this).setTitle("Buscar anime").setView(editText).setPositiveButton("Buscar"){ _, _->
+            val query = editText.text.toString().trim()
+            filtrarAnimes(query)
+        }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun filtrarAnimes(query: String) {
+        if (query.isEmpty()) {
+            animesList.clear()
+            animesList.addAll(allAnimes)
+            adapter.notifyDataSetChanged()
+            return
+        }
+        val filtrados = allAnimes.filter { anime ->
+            anime.nombre.contains(query, ignoreCase = true)
+                    || anime.categoria?.contains(query, ignoreCase = true) == true
+        }
+        animesList.clear()
+        animesList.addAll(filtrados)
+        adapter.notifyDataSetChanged()
     }
 
     /** Carga favoritos primero para marcar la lista */
