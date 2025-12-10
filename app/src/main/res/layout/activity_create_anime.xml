@@ -120,30 +120,42 @@
                     android:inputType="textUri" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Imágenes -->
-            <com.google.android.material.textfield.TextInputLayout
+            <!-- Selector de Imagen -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Miniatura (nombre/URL)">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etMiniatura"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textUri" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:text="Imagen del Anime"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:paddingBottom="8dp" />
 
-            <com.google.android.material.textfield.TextInputLayout
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:id="@+id/imgPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/placeholder_anime"
+                    android:contentDescription="Preview de imagen" />
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btnSeleccionarImagen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Cover URL (opcional)">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etCoverUrl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textUri" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:text="📷 Seleccionar Imagen"
+                android:textAllCaps="false"
+                android:backgroundTint="#59b1aa"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
 
             <!-- Fechas / Próximo episodio -->
             <com.google.android.material.textfield.TextInputLayout

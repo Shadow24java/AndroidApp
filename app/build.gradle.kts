@@ -69,6 +69,9 @@ dependencies {
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
 
+    //Facebook Sign-In
+    implementation("com.facebook.android:facebook-login:latest.release")
+
     // Google Maps / Location
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
