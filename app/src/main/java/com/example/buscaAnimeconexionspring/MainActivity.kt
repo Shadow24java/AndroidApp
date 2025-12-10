@@ -28,6 +28,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: AnimeAdapter
@@ -85,9 +86,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         // Botones principales
         binding.btnCargar.setOnClickListener { cargarFavoritosYAnimes() }
         binding.btnFavoritos.setOnClickListener {
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, Login::class.java))
+        }
+        binding.btnFavoritosTop.setOnClickListener {
             startActivity(Intent(this, FavoritosActivity::class.java))
         }
-        binding.btnEmision.setOnClickListener {
+        binding.btnEmisionTop.setOnClickListener {
             startActivity(Intent(this, EmisionActivity::class.java))
         }
         binding.fabAddAnime.setOnClickListener {
@@ -97,6 +102,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         binding.fabSearch.setOnClickListener {
             showSearchDialog()
         }
+        binding.fabSearch.setOnClickListener { showSearchDialog() }
+
+        // botón cargar animes
+        binding.btnCargar.setOnClickListener { cargarFavoritosYAnimes() }
 
         // ====== SENSOR DE LUZ: INICIALIZACIÓN ======
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -180,8 +189,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             return
         }
         val filtrados = allAnimes.filter { anime ->
-            anime.nombre.contains(query, ignoreCase = true)
-                    || anime.categoria?.contains(query, ignoreCase = true) == true
+            anime.nombre.contains(query, ignoreCase = true) ||
+                    (anime.categoria?.contains(query, ignoreCase = true) == true)
         }
         animesList.clear()
         animesList.addAll(filtrados)

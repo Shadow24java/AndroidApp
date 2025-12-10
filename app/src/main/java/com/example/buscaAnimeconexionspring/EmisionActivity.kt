@@ -26,6 +26,7 @@ class EmisionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEmisionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.fabBack.setOnClickListener { finish() }
 
         supportActionBar?.title = "En emisión"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

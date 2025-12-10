@@ -1,6 +1,7 @@
 package com.example.buscaAnimeconexionspring
 
 import AnimeAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +27,7 @@ class FavoritosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFavoritosBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.fabBack.setOnClickListener { finish() }
 
         // Barra superior con título y flecha atrás
         supportActionBar?.title = "Favoritos"
@@ -33,7 +35,11 @@ class FavoritosActivity : AppCompatActivity() {
 
         adapter = AnimeAdapter(
             animes = lista,
-            onClick = { /* opcional: detalle */ },
+            onClick = { anime ->
+                val intent = Intent(this, AnimeDetailActivity::class.java)
+                intent.putExtra("anime", anime)
+                startActivity(intent)
+            },
             onToggleFavoritos = { anime -> anime.id?.let { id -> quitarDeFavoritos(id) } },
             favoritos = favoritosIds,
             forceRemoveLabel = true
