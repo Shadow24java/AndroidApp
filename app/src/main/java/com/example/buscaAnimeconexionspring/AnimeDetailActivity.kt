@@ -17,51 +17,63 @@ class AnimeDetailActivity : AppCompatActivity() {
         binding = ActivityAnimeDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.title = "Detalle"
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        // Botón flotante para volver atrás
+        binding.fabBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
+        // Obtenemos el anime del intent; si no viene, cerramos la pantalla
         val anime = intent.getSerializableExtra("anime") as? Anime
-            ?: run { finish(); return }
+            ?: run {
+                finish()
+                return
+            }
 
+        // Fecha de emisión (inicio / próxima / fin)
         val fechaTxt = anime.fechaInicio ?: anime.proximoEpFecha ?: anime.fechaFin
         binding.tvFecha.text = "Fecha emisión: ${fechaTxt ?: "-"}"
 
-        val proxNum = anime.proximoEpNum
-        val proxFecha = anime.proximoEpFecha
+        // Próximo episodio
         val proxTxt = when {
-            proxNum != null && proxFecha != null -> "Próximo ep. $proxNum:"
-            proxNum != null -> "Próximo ep. $proxNum"
+            anime.proximoEpNum != null && anime.proximoEpFecha != null ->
+                "Próximo ep. ${anime.proximoEpNum}:"
+            anime.proximoEpNum != null ->
+                "Próximo ep. ${anime.proximoEpNum}"
             else -> "Próximo ep.: -"
         }
         binding.tvProximo.text = proxTxt
 
+        // Resto de datos
         binding.tvTitulo.text = anime.nombre ?: ""
         binding.tvCategoria.text = "Categoría: ${anime.categoria ?: "-"}"
         binding.tvValoracion.text = "Valoración: ${anime.valoracion ?: "-"}"
         binding.tvAutor.text = "Autor: ${anime.autor ?: "-"}"
         binding.tvDescripcion.text = anime.descripcion ?: "Sin descripción"
 
-        val urlImg = anime.coverUrl ?: anime.miniatura?.let { "http://10.0.2.2:8090/images/$it" }
+        // Imagen (usa coverUrl o la miniatura del backend)
+        val urlImg = anime.coverUrl ?: anime.miniatura?.let { "http://10.0.2.2:8091/images/$it" }
         Glide.with(this)
             .load(urlImg)
             .placeholder(R.drawable.placeholder_anime)
             .error(R.drawable.placeholder_anime)
             .into(binding.imgCover)
 
+        // Botón "Ver"
         binding.btnVer.setOnClickListener {
-            anime.enlaceVer?.takeIf { it.isNotBlank() }?.let { openLink(it) }
+            anime.enlaceVer
+                ?.takeIf { it.isNotBlank() }
+                ?.let { openLink(it) }
         }
+
+        // Botón "Trailer"
         binding.btnTrailer.setOnClickListener {
-            anime.enlaceTrailer?.takeIf { it.isNotBlank() }?.let { openLink(it) }
+            anime.enlaceTrailer
+                ?.takeIf { it.isNotBlank() }
+                ?.let { openLink(it) }
         }
     }
 
     private fun openLink(url: String) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        finish()
-        return true
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_fire_pattern"
@@ -23,6 +24,18 @@
             android:gravity="center_horizontal"
             android:layout_gravity="center"
             android:maxWidth="360dp">
+
+            <!-- BOTÓN FLOTANTE ATRÁS -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Atrás"
+                app:srcCompat="@drawable/ic_back"
+                app:tint="@android:color/white"
+                android:backgroundTint="#59b1aa"
+                android:layout_gravity="end"
+                android:layout_margin="12dp" />
 
             <ImageView
                 android:id="@+id/imgCover"
@@ -94,7 +107,7 @@
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:background="@drawable/bg_button_orange"
-                    android:layout_marginEnd="8dp"/>
+                    android:layout_marginEnd="8dp" />
 
                 <Button
                     android:id="@+id/btnTrailer"
@@ -103,7 +116,7 @@
                     android:text="Trailer"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
-                    android:background="@drawable/bg_button_orange"/>
+                    android:background="@drawable/bg_button_orange" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

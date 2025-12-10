@@ -1,6 +1,6 @@
 package com.example.buscaAnimeconexionspring.ui.home
 
-import AnimeAdapter
+import com.example.buscaAnimeconexionspring.adapter.AnimeAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater

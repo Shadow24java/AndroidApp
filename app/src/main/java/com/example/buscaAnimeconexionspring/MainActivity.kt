@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.buscaAnimeconexionspring.adapter.AnimeAdapter
 import com.example.buscaAnimeconexionspring.api.AnimeApiService
@@ -26,7 +27,6 @@ import com.google.firebase.auth.FirebaseAuth
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private var lightSensor: Sensor? = null
     private var firstLightToastShown = false
+    private var isDarkMode = false
     // ===========================
 
     companion object {
@@ -114,7 +115,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
 
         if (lightSensor == null) {
-            Toast.makeText(this, "Este dispositivo no tiene sensor de luz", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Este dispositivo no tiene sensor de luz", Toast.LENGTH_LONG)
+                .show()
         } else {
             Log.d(TAG, "Sensor de luz disponible")
         }
@@ -140,28 +142,53 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        // No necesitamos hacer nada aquí en este ejemplo
+        // No necesitamos hacer nada aquí
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        if (event?.sensor?.type == Sensor.TYPE_LIGHT) {
-            val lightValue = event.values[0] // lux
+        if (event?.sensor?.type != Sensor.TYPE_LIGHT) return
 
-            // Primera vez que recibimos datos: mostramos Toast
-            if (!firstLightToastShown) {
-                Toast.makeText(
-                    this,
-                    "Sensor de luz activo: $lightValue lux",
-                    Toast.LENGTH_SHORT
-                ).show()
-                firstLightToastShown = true
-            }
+        val lightValue = event.values[0] // lux
+        Log.d(TAG, "Luz ambiente: $lightValue lux")
 
-            // Mostramos la luz en el subtítulo de la ActionBar
-            supportActionBar?.subtitle = "Luz ambiente: ${"%.1f".format(lightValue)} lux"
+        // Primera vez que recibimos datos: mostramos Toast
+        if (!firstLightToastShown) {
+            Toast.makeText(
+                this,
+                "Sensor de luz activo: $lightValue lux",
+                Toast.LENGTH_SHORT
+            ).show()
+            firstLightToastShown = true
+        }
 
-            // Log para el Logcat
-            Log.d(TAG, "Luz ambiente: $lightValue lux")
+        // Mostramos la luz en el subtítulo de la ActionBar (si existe)
+        supportActionBar?.subtitle = "Luz ambiente: ${"%.1f".format(lightValue)} lux"
+
+        // Umbrales para decidir modo oscuro / claro
+        val LOW_LIGHT = 20f   // por debajo: consideramos poca luz
+        val HIGH_LIGHT = 80f  // por encima: luz alta
+
+        // Poca luz -> activar modo oscuro
+        if (lightValue < LOW_LIGHT && !isDarkMode) {
+            isDarkMode = true
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            binding.tvEstado.text = "Modo oscuro (poca luz). Protege la vista 😴"
+            Toast.makeText(
+                this,
+                "Poca luz, activando modo oscuro 😴",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        // Mucha luz y estamos en oscuro -> volver a modo claro
+        else if (lightValue > HIGH_LIGHT && isDarkMode) {
+            isDarkMode = false
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            binding.tvEstado.text = "Modo claro (mucha luz) ☀️"
+            Toast.makeText(
+                this,
+                "Mucha luz, activando modo claro ☀️",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

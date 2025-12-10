@@ -1,6 +1,6 @@
 package com.example.buscaAnimeconexionspring
 
-import AnimeAdapter
+import com.example.buscaAnimeconexionspring.adapter.AnimeAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
