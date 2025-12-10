@@ -1,6 +1,5 @@
 package com.example.buscaAnimeconexionspring
 
-import AnimeAdapter
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -14,6 +13,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.buscaAnimeconexionspring.adapter.AnimeAdapter
 import com.example.buscaAnimeconexionspring.api.AnimeApiService
 import com.example.buscaAnimeconexionspring.databinding.ActivityMainBinding
 import com.example.buscaAnimeconexionspring.model.Anime
@@ -27,8 +27,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class MainActivity : AppCompatActivity(), SensorEventListener {
-class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: AnimeAdapter
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sensorManager: SensorManager
     private var lightSensor: Sensor? = null
     private var firstLightToastShown = false
-    // ============================
+    // ===========================
 
     companion object {
         private const val TAG = "MainActivity"
@@ -75,7 +75,9 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("anime", anime)
                 startActivity(intent)
             },
-            onToggleFavoritos = { anime -> anime.id?.let { toggleFavorito(it) } },
+            onToggleFavoritos = { anime ->
+                anime.id?.let { toggleFavorito(it) }
+            },
             favoritos = favoritosIds,
             forceRemoveLabel = false
         )
@@ -83,29 +85,29 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
 
-        // Botones principales
+        // ====== BOTONES ======
         binding.btnCargar.setOnClickListener { cargarFavoritosYAnimes() }
-        binding.btnFavoritos.setOnClickListener {
+
         binding.btnHome.setOnClickListener {
             startActivity(Intent(this, Login::class.java))
         }
+
         binding.btnFavoritosTop.setOnClickListener {
             startActivity(Intent(this, FavoritosActivity::class.java))
         }
+
         binding.btnEmisionTop.setOnClickListener {
             startActivity(Intent(this, EmisionActivity::class.java))
         }
+
         binding.fabAddAnime.setOnClickListener {
             startActivity(Intent(this, CreateAnimeActivity::class.java))
         }
-        binding.btnLogout.setOnClickListener { signOut() }
-        binding.fabSearch.setOnClickListener {
-            showSearchDialog()
-        }
-        binding.fabSearch.setOnClickListener { showSearchDialog() }
 
-        // botón cargar animes
-        binding.btnCargar.setOnClickListener { cargarFavoritosYAnimes() }
+        binding.btnLogout.setOnClickListener { signOut() }
+
+        binding.fabSearch.setOnClickListener { showSearchDialog() }
+        // =====================
 
         // ====== SENSOR DE LUZ: INICIALIZACIÓN ======
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -145,7 +147,7 @@ class MainActivity : AppCompatActivity() {
         if (event?.sensor?.type == Sensor.TYPE_LIGHT) {
             val lightValue = event.values[0] // lux
 
-            // Primera vez que recibimos datos: mostramos Toast (estilo profe)
+            // Primera vez que recibimos datos: mostramos Toast
             if (!firstLightToastShown) {
                 Toast.makeText(
                     this,
@@ -158,7 +160,7 @@ class MainActivity : AppCompatActivity() {
             // Mostramos la luz en el subtítulo de la ActionBar
             supportActionBar?.subtitle = "Luz ambiente: ${"%.1f".format(lightValue)} lux"
 
-            // Y dejamos log por si el profe mira el Logcat
+            // Log para el Logcat
             Log.d(TAG, "Luz ambiente: $lightValue lux")
         }
     }

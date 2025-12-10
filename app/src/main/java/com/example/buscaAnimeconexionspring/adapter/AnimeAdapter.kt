@@ -1,4 +1,5 @@
-import android.util.Log
+package com.example.buscaAnimeconexionspring.adapter  // ⬅️ ESTA ES LA LÍNEA QUE FALTABA
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,16 +59,15 @@ class AnimeAdapter(
             tvValoracion.text = "Valoración: ${anime.valoracion ?: "-"}"
             tvCategorias.text = "Categoría: ${anime.categoria ?: "-"}"
 
-
-            val url = anime.coverUrl ?: anime.miniatura?.let { "http://10.0.2.2:8090/images/$it" }
+            val url = anime.coverUrl ?: anime.miniatura?.let {
+                "http://10.0.2.2:8091/images/$it"
+            }
 
             Glide.with(itemView.context)
                 .load(url)
                 .placeholder(R.drawable.placeholder_anime)
                 .error(R.drawable.placeholder_anime)
                 .into(imgCover)
-
-
 
             val isFav = forceRemoveLabel || (anime.id != null && favoritos.contains(anime.id!!))
             btnFavorito.text = if (isFav) "Quitar" else "Favoritos"
