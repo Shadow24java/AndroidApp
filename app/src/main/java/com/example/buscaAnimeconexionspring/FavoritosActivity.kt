@@ -48,6 +48,39 @@ class FavoritosActivity : AppCompatActivity() {
         binding.recyclerFavoritos.layoutManager = LinearLayoutManager(this)
         binding.recyclerFavoritos.adapter = adapter
 
+        // ====== BOTTOM NAVIGATION ======
+        binding.bottomNavigation.selectedItemId = R.id.navigation_favoritos
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.navigation_favoritos -> {
+                    // Ya estamos aquí
+                    true
+                }
+                R.id.navigation_emision -> {
+                    startActivity(Intent(this, EmisionActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.navigation_mis_animes -> {
+                    startActivity(Intent(this, MisAnimesActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.navigation_perfil -> {
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                    finish()
+                    true
+                }
+                else -> false
+            }
+        }
+        // =====================
+
         cargarFavoritos()
     }
 

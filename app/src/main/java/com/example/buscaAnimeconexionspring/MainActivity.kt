@@ -89,25 +89,35 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         // ====== BOTONES ======
         binding.btnCargar.setOnClickListener { cargarFavoritosYAnimes() }
 
-        binding.btnHome.setOnClickListener {
-            startActivity(Intent(this, Login::class.java))
-        }
-
-        binding.btnFavoritosTop.setOnClickListener {
-            startActivity(Intent(this, FavoritosActivity::class.java))
-        }
-
-        binding.btnEmisionTop.setOnClickListener {
-            startActivity(Intent(this, EmisionActivity::class.java))
-        }
-
-        binding.fabAddAnime.setOnClickListener {
-            startActivity(Intent(this, CreateAnimeActivity::class.java))
-        }
-
-        binding.btnLogout.setOnClickListener { signOut() }
-
         binding.fabSearch.setOnClickListener { showSearchDialog() }
+
+        // ====== BOTTOM NAVIGATION ======
+        binding.bottomNavigation.selectedItemId = R.id.navigation_home
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    // Ya estamos en el MainActivity, no hacer nada
+                    true
+                }
+                R.id.navigation_favoritos -> {
+                    startActivity(Intent(this, FavoritosActivity::class.java))
+                    true
+                }
+                R.id.navigation_emision -> {
+                    startActivity(Intent(this, EmisionActivity::class.java))
+                    true
+                }
+                R.id.navigation_mis_animes -> {
+                    startActivity(Intent(this, MisAnimesActivity::class.java))
+                    true
+                }
+                R.id.navigation_perfil -> {
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
         // =====================
 
         // ====== SENSOR DE LUZ: INICIALIZACIÓN ======

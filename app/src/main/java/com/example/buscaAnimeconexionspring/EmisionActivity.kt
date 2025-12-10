@@ -1,6 +1,7 @@
 package com.example.buscaAnimeconexionspring
 
 import com.example.buscaAnimeconexionspring.adapter.AnimeAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -34,7 +35,7 @@ class EmisionActivity : AppCompatActivity() {
         adapter = AnimeAdapter(
             animes = lista,
             onClick = { anime ->
-                val intent = intent.setClass(this, AnimeDetailActivity::class.java)
+                val intent = Intent(this, AnimeDetailActivity::class.java)
                 intent.putExtra("anime", anime)
                 startActivity(intent)
             },
@@ -44,6 +45,39 @@ class EmisionActivity : AppCompatActivity() {
         )
         binding.recyclerEmision.layoutManager = LinearLayoutManager(this)
         binding.recyclerEmision.adapter = adapter
+
+        // ====== BOTTOM NAVIGATION ======
+        binding.bottomNavigation.selectedItemId = R.id.navigation_emision
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.navigation_favoritos -> {
+                    startActivity(Intent(this, FavoritosActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.navigation_emision -> {
+                    // Ya estamos aquí
+                    true
+                }
+                R.id.navigation_mis_animes -> {
+                    startActivity(Intent(this, MisAnimesActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.navigation_perfil -> {
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                    finish()
+                    true
+                }
+                else -> false
+            }
+        }
+        // =====================
 
         cargarFavoritosYEmision()
     }

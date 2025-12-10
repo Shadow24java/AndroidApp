@@ -15,9 +15,10 @@ import com.example.buscaAnimeconexionspring.model.Anime
 class AnimeAdapter(
     private var animes: MutableList<Anime>,
     private val onClick: (Anime) -> Unit,
-    private val onToggleFavoritos: (Anime) -> Unit,
+    private val onToggleFavoritos: ((Anime) -> Unit)?,
     private val favoritos: MutableList<Long>,
-    private val forceRemoveLabel: Boolean = false
+    private val forceRemoveLabel: Boolean = false,
+    private val onDelete: ((Anime) -> Unit)? = null
 ) : RecyclerView.Adapter<AnimeAdapter.AnimeViewHolder>() {
 
     fun updateAnimes(newAnimes: List<Anime>) {
@@ -50,6 +51,7 @@ class AnimeAdapter(
         private val tvValoracion: TextView = itemView.findViewById(R.id.tvValoracion)
         private val tvCategorias: TextView = itemView.findViewById(R.id.tvCategorias)
         private val btnFavorito: Button = itemView.findViewById(R.id.btnFavorito)
+        private val btnEliminar: Button = itemView.findViewById(R.id.btnEliminar)
         private val cardView: CardView = itemView.findViewById(R.id.cardView)
         private val imgCover: ImageView = itemView.findViewById(R.id.imgCover)
 
@@ -69,11 +71,25 @@ class AnimeAdapter(
                 .error(R.drawable.placeholder_anime)
                 .into(imgCover)
 
-            val isFav = forceRemoveLabel || (anime.id != null && favoritos.contains(anime.id!!))
-            btnFavorito.text = if (isFav) "Quitar" else "Favoritos"
+            // Mostrar/ocultar botón de favoritos según si hay callback
+            if (onToggleFavoritos != null) {
+                val isFav = forceRemoveLabel || (anime.id != null && favoritos.contains(anime.id!!))
+                btnFavorito.text = if (isFav) "Quitar" else "Favoritos"
+                btnFavorito.visibility = View.VISIBLE
+                btnFavorito.setOnClickListener { onToggleFavoritos.invoke(anime) }
+            } else {
+                btnFavorito.visibility = View.GONE
+            }
+
+            // Mostrar/ocultar botón de eliminar según si hay callback
+            if (onDelete != null) {
+                btnEliminar.visibility = View.VISIBLE
+                btnEliminar.setOnClickListener { onDelete.invoke(anime) }
+            } else {
+                btnEliminar.visibility = View.GONE
+            }
 
             cardView.setOnClickListener { onClick(anime) }
-            btnFavorito.setOnClickListener { onToggleFavoritos(anime) }
         }
     }
 }

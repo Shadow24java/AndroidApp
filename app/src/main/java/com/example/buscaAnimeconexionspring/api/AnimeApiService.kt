@@ -41,6 +41,12 @@ interface AnimeApiService {
 
     @DELETE("/api/favoritos/{id}")
     fun removeFavorite(@Path("id") id: Long): Call<ApiResponse<Boolean>>
+    
+    @DELETE("/api/animes/{id}")
+    fun deleteAnime(@Path("id") id: Long): Call<ApiResponse<Boolean>>
+    
+    @GET("/api/animes")
+    fun getAllAnimes(): Call<ApiResponse<List<Anime>>>
 }
 
 

@@ -47,45 +47,60 @@ class CreateAnimeActivity : AppCompatActivity() {
     }
 
     private fun guardar() {
-        val dto = AnimeCreateDto(
-            nombre = binding.etNombre.text.toString().trim(),
-            categoria = binding.etCategoria.text.toString().trim(),
-            valoracion = binding.etValoracion.text.toString().toDoubleOrNull(),
-            autor = binding.etAutor.text.toString().trim().nullIfBlank(),
-            enlaceTrailer = binding.etEnlaceTrailer.text.toString().trim().nullIfBlank(),
-            enlaceVer = binding.etEnlaceVer.text.toString().trim().nullIfBlank(),
-            miniatura = binding.etMiniatura.text.toString().trim().nullIfBlank(),
-            coverUrl = binding.etCoverUrl.text.toString().trim().nullIfBlank(),
-            estado = null, // pon "RELEASING" si quieres valor por defecto
-            fechaInicio = binding.etFechaInicio.text.toString().trim().nullIfBlank(),
-            fechaFin = binding.etFechaFin.text.toString().trim().nullIfBlank(),
-            proximoEpNum = binding.etProximoEpNum.text.toString().toIntOrNull(),
-            proximoEpFecha = binding.etProximoEpFecha.text.toString().trim().nullIfBlank(),
-            descripcion = binding.etDescripcion.text.toString().trim().nullIfBlank()
-        )
-
-        if (dto.nombre.isBlank() || dto.categoria.isBlank()) {
+        val nombre = binding.etNombre.text.toString().trim()
+        val categoria = binding.etCategoria.text.toString().trim()
+        
+        if (nombre.isBlank() || categoria.isBlank()) {
             Toast.makeText(this, "Nombre y categoría son obligatorios", Toast.LENGTH_SHORT).show()
             return
         }
 
         binding.btnGuardar.isEnabled = false
 
-        api.createAnime(dto).enqueue(object : Callback<ApiResponse<Anime>> {
-            override fun onResponse(call: Call<ApiResponse<Anime>>, resp: Response<ApiResponse<Anime>>) {
-                binding.btnGuardar.isEnabled = true
-                if (resp.isSuccessful) {
-                    Toast.makeText(this@CreateAnimeActivity, "Anime creado", Toast.LENGTH_SHORT).show()
-                    finish()
-                } else {
-                    Toast.makeText(this@CreateAnimeActivity, "Error: ${resp.code()}", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onFailure(call: Call<ApiResponse<Anime>>, t: Throwable) {
-                binding.btnGuardar.isEnabled = true
-                Toast.makeText(this@CreateAnimeActivity, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
-            }
-        })
+        try {
+            // Crear el anime con los datos del formulario
+            val nuevoAnime = Anime(
+                id = System.currentTimeMillis(), // ID único basado en timestamp
+                nombre = nombre,
+                categoria = categoria,
+                valoracion = binding.etValoracion.text.toString().toDoubleOrNull(),
+                autor = binding.etAutor.text.toString().trim().nullIfBlank(),
+                enlaceTrailer = binding.etEnlaceTrailer.text.toString().trim().nullIfBlank(),
+                enlaceVer = binding.etEnlaceVer.text.toString().trim().nullIfBlank(),
+                miniatura = binding.etMiniatura.text.toString().trim().nullIfBlank(),
+                coverUrl = binding.etCoverUrl.text.toString().trim().nullIfBlank(),
+                estado = "PERSONAL", // Marcador para animes personales
+                fechaInicio = binding.etFechaInicio.text.toString().trim().nullIfBlank(),
+                fechaFin = binding.etFechaFin.text.toString().trim().nullIfBlank(),
+                proximoEpNum = binding.etProximoEpNum.text.toString().toIntOrNull(),
+                proximoEpFecha = binding.etProximoEpFecha.text.toString().trim().nullIfBlank(),
+                descripcion = binding.etDescripcion.text.toString().trim().nullIfBlank()
+            )
+
+            // Guardar en SharedPreferences
+            val sharedPref = getSharedPreferences("MisAnimes", android.content.Context.MODE_PRIVATE)
+            val userId = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: "guest"
+            val misAnimesJson = sharedPref.getString("user_$userId", "[]")
+
+            val gson = com.google.gson.Gson()
+            val type = object : com.google.gson.reflect.TypeToken<MutableList<Anime>>() {}.type
+            val animesList: MutableList<Anime> = gson.fromJson(misAnimesJson, type) ?: mutableListOf()
+
+            // Agregar el nuevo anime
+            animesList.add(nuevoAnime)
+
+            // Guardar de vuelta
+            val editor = sharedPref.edit()
+            editor.putString("user_$userId", gson.toJson(animesList))
+            editor.apply()
+
+            Toast.makeText(this, "Anime creado correctamente", Toast.LENGTH_SHORT).show()
+            finish()
+
+        } catch (e: Exception) {
+            binding.btnGuardar.isEnabled = true
+            Toast.makeText(this, "Error al crear anime: ${e.message}", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
