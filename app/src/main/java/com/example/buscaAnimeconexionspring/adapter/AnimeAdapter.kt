@@ -60,7 +60,7 @@ class AnimeAdapter(
             tvCategorias.text = "Categoría: ${anime.categoria ?: "-"}"
 
             val url = anime.coverUrl ?: anime.miniatura?.let {
-                "http://10.0.2.2:8091/images/$it"
+                "http://10.0.2.2:8090/images/$it"
             }
 
             Glide.with(itemView.context)

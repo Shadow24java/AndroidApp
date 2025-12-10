@@ -51,7 +51,7 @@ class AnimeDetailActivity : AppCompatActivity() {
         binding.tvDescripcion.text = anime.descripcion ?: "Sin descripción"
 
         // Imagen (usa coverUrl o la miniatura del backend)
-        val urlImg = anime.coverUrl ?: anime.miniatura?.let { "http://10.0.2.2:8091/images/$it" }
+        val urlImg = anime.coverUrl ?: anime.miniatura?.let { "http://10.0.2.2:8090/images/$it" }
         Glide.with(this)
             .load(urlImg)
             .placeholder(R.drawable.placeholder_anime)
