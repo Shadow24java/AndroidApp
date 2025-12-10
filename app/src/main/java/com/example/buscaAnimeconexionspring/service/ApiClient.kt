@@ -8,14 +8,14 @@ object ApiClient {
 
     // 👇 IMPORTANTE: puerto numérico + barra final
     // si tu backend va en 8091, cambia 8090 por 8091
-    private const val BASE_URL = "http://10.0.2.2:8091/api/"
+    private const val BASE_URL = "http://10.0.2.2:8090/api/"
 
     private var retrofit: Retrofit? = null
 
     fun getRetrofit(): Retrofit {
         if (retrofit == null) {
             retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)                         // aquí ya NO puede ser "8090api"
+                .baseUrl(BASE_URL)                         
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }

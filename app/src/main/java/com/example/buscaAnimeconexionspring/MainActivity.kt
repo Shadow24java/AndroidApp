@@ -21,14 +21,12 @@ import com.google.firebase.auth.FirebaseAuth
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.example.buscaAnimeconexionspring.CreateAnimeActivity
-
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: AnimeAdapter
-    private  val allAnimes = mutableListOf<Anime>()
+    private val allAnimes = mutableListOf<Anime>()
     private val animesList = mutableListOf<Anime>()
     private val favoritosIds = mutableListOf<Long>()
     private lateinit var apiService: AnimeApiService
@@ -69,22 +67,23 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
 
-        binding.btnCargar.setOnClickListener { cargarFavoritosYAnimes() }
-        binding.btnFavoritos.setOnClickListener {
+        binding.btnHome.setOnClickListener {
+            startActivity(Intent(this, Login::class.java))
+        }
+        binding.btnFavoritosTop.setOnClickListener {
             startActivity(Intent(this, FavoritosActivity::class.java))
         }
-        binding.btnEmision.setOnClickListener {
+        binding.btnEmisionTop.setOnClickListener {
             startActivity(Intent(this, EmisionActivity::class.java))
         }
-
         binding.fabAddAnime.setOnClickListener {
             startActivity(Intent(this, CreateAnimeActivity::class.java))
         }
         binding.btnLogout.setOnClickListener { signOut() }
+        binding.fabSearch.setOnClickListener { showSearchDialog() }
 
-        binding.fabSearch.setOnClickListener {
-            showSearchDialog()
-        }
+        // botón cargar animes
+        binding.btnCargar.setOnClickListener { cargarFavoritosYAnimes() }
 
         cargarFavoritosYAnimes()
     }
@@ -94,10 +93,13 @@ class MainActivity : AppCompatActivity() {
             hint = "Buscar anime..."
             setPadding(40, 40, 40, 40)
         }
-        AlertDialog.Builder(this).setTitle("Buscar anime").setView(editText).setPositiveButton("Buscar"){ _, _->
-            val query = editText.text.toString().trim()
-            filtrarAnimes(query)
-        }
+        AlertDialog.Builder(this)
+            .setTitle("Buscar anime")
+            .setView(editText)
+            .setPositiveButton("Buscar") { _, _ ->
+                val query = editText.text.toString().trim()
+                filtrarAnimes(query)
+            }
             .setNegativeButton("Cancelar", null)
             .show()
     }
@@ -110,8 +112,8 @@ class MainActivity : AppCompatActivity() {
             return
         }
         val filtrados = allAnimes.filter { anime ->
-            anime.nombre.contains(query, ignoreCase = true)
-                    || anime.categoria?.contains(query, ignoreCase = true) == true
+            anime.nombre.contains(query, ignoreCase = true) ||
+                    (anime.categoria?.contains(query, ignoreCase = true) == true)
         }
         animesList.clear()
         animesList.addAll(filtrados)
